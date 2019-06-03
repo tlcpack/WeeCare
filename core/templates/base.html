@@ -19,43 +19,22 @@
         </div>
        
         
-        {% if user.is_authenticated %}
-            <div class="username">
-                <h4><button class="log_register"><a href="{% url 'account_logout' %}">Logout</a></button></h4>
-            </div>
-        {% else %}
-            <div class="login">
-                <h4><button class="log_register"><a href="{% url 'account_login' %}">Login</button></a> 
-                <button class="log_register"><a href="{% url 'account_signup' %}">Register</a></button></h4>
-            </div>
-        {% endif %}
-        {% if user.is_authenticated and isguardian or not user.is_authenticated %}
+        
+        
             <div class="tag_line">
 
                 <p> We care for your little ones from check-in to check-out.</p>
 
             </div>
-        {% endif %}
+        
 
         <div class="base_bar">
 
-                {% if user.is_authenticated and iscaregiver %}
-                {% for classroom in classrooms %} 
-                <p> {{ classroom.classroom }} Classroom </p>
-                {% endfor%}
-                {% endif %}
+                
                 
         </div>
 
-    <div class="messages_box">
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <p class="{{ message.tags }}">{{ message }}</p>
-        {% endfor %}
-    </div>
-    {% endif %}
-    </div>
+    
 
     <body>
         {% block content %}{% endblock %}

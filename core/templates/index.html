@@ -5,10 +5,10 @@
 {% block content %}
 <script src="/static/js/main.js"></script>
 
-{% if user.is_authenticated %}
+
 <div class="wrapper">
     {% for child in children %}
-    {% if iscaregiver %}
+    
     <div class="subwrapper">
         {% if child.visit|length >= 1 %}
         <a href="{% url 'action_list' visit_id=child.visit.0.id %}#anchor">
@@ -31,43 +31,15 @@
         <a href="{% url 'check_in' child_id=child.child_id %}"><button class="checkbutton in">Check-in</button></a>
         {% endif %}
 
-        {% endif %}
+        
     </div>
     {% endfor %}
 </div>
-{% if isguardian %}
-<div class="guardian_wrapper">
-    {% for visit in child_visits %}
-    <div class="guardian_kidbox">
-        <h3>{{ visit.child }} - {{ visit.check_in|date:"M d Y" }}</h3>
-        <p><strong>Teacher Comments:</strong></p>
-        <p>{{ visit.comment|linebreaks }}</p>
-        <p><strong>Check In:</strong> {{ visit.check_in|date:"h:i a" }}</p>
-        {% for activity in visit.activities.all %}
-        {% if activity.activity_type == 'NP' %}
-        <p><strong>Nap:</strong> {{ activity.start_time|date:"h:i a"}}
-            - {{ activity.end_time|date:"h:i a" }}</p>
-        {% endif %}
-        {% if activity.activity_type == 'OT' %}
-        <p><strong>Diaper change:</strong> {{ activity.start_time|date:"h:i a" }}
-            | {{ activity.subtype_option }}</p>
-        {% endif %}
-        {% if activity.activity_type == 'IN' %}
-        <p><strong>Food:</strong> {{ activity.start_time|date:"h:i a" }}
-            | {{ activity.subtype_option }} {{activity.subtype}}</p>
-        {% endif %}
-        {% endfor %}
-        <p><strong>Check Out:</strong> {{ visit.check_out|date:"h:i a" }}</p>
-    </div>
-    {% endfor %}
-    {% endif %}
+
 </div>
 </div>
 
-{% else %}
-<div class="welcome">
-    <h4><a href="{% url 'account_login' %}"></h4>
-    {% endif %}
+
     {% endblock %}
 </div>
 
