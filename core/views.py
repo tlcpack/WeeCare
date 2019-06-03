@@ -22,7 +22,14 @@ def index(request):
 
     
     children = Child.objects.all()
-
+    children = Child.objects.prefetch_related(
+                Prefetch(
+                    "visits",
+                    queryset=Visit.objects.filter(check_out__isnull=True, check_in__date__lte=datetime.date.today()),
+                    to_attr="visit"
+                )
+            ).order_by('full_name')
+        
     
 
     
@@ -172,7 +179,7 @@ def check_out(request, visit_id):
     naps = Activity.objects.filter(visit_id=visit_id, activity_type=Activity.NAP)
     outputs = Activity.objects.filter(visit_id=visit_id, activity_type=Activity.OUTPUT)
     child = visit.child
-    guardians = child.guardians.all()
+    
     inputs = Activity.objects.filter(visit_id=visit_id, activity_type=Activity.INPUT)
     comment = visit.comment
 
@@ -230,7 +237,7 @@ def change_notification(request):
     change_list = []
     
     for visit in visits:
-        if visit.child in Child.objects.filter(classroom__caregiver=request.user):
+        if visit.child in Child.objects:
             activities = visit.activities
             outputs = list(activities.filter(activity_type=Activity.OUTPUT))
             timedelta = datetime.timedelta(seconds=30)
@@ -262,7 +269,7 @@ def feed_notification(request):
     feed_list = []
 
     for visit in visits:
-        if visit.child in Child.objects.filter(classroom__caregiver=request.user):
+        if visit.child in Child.objects:
             activities = visit.activities
             inputs = list(activities.filter(activity_type=Activity.INPUT))
 
@@ -288,7 +295,7 @@ def nap_notification(request):
     nap_list = []
 
     for visit in visits:
-        if visit.child in Child.objects.filter(classroom__caregiver=request.user):
+        if visit.child in Child.objects:
             naps = visit.activities.filter(activity_type=Activity.NAP)
 
             for nap in naps:

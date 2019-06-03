@@ -158,11 +158,11 @@ window.onclick = function (event) {
 document.addEventListener('DOMContentLoaded', function () {
   setInterval(function () {
     getChangeNotificationData(changeNotificationUrl)
-  }, 1000)
+  }, 10000)
   setInterval(function () {
     getFeedNotificationData(feedNotificationUrl)
-  }, 1000)
+  }, 5000)
   setInterval(function () {
     getNapNotificationData(napNotificationUrl)
-  }, 1000)
+  }, 3000)
 })
